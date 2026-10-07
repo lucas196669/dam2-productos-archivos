@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Productos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="theme.toggle()">
+        {{ theme.dark() ? 'Modo claro' : 'Modo oscuro' }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (loading()) {
+    <div class="center-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando productos...</p>
+    </div>
+  } @else if (error()) {
+    <div class="center-container">
+      <p class="error-msg">{{ error() }}</p>
+      <ion-button (click)="loadProducts()">Reintentar</ion-button>
+    </div>
+  } @else {
+    <div class="products-grid">
+      @for (p of products(); track p.id) {
+        <ion-card>
+          <img [src]="p.thumbnail" [alt]="p.title" class="product-img" />
+          <ion-card-header>
+            <ion-card-title>{{ p.title }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p>{{ p.description }}</p>
+            <p class="price"><strong>{{ p.price | currency:'EUR' }}</strong></p>
+            <p class="rating">⭐ {{ p.rating }} / 5</p>
+          </ion-card-content>
+        </ion-card>
+      }
+    </div>
+
+    <div class="paginacion">
+      <ion-button [disabled]="page() === 1" (click)="goToPage(page() - 1)">Anterior</ion-button>
+      <span>Página {{ page() }} de {{ totalPages() }}</span>
+      <ion-button [disabled]="page() === totalPages()" (click)="goToPage(page() + 1)">Siguiente</ion-button>
+    </div>
+  }
+</ion-content>

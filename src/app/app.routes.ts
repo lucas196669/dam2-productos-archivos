@@ -12,5 +12,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/productos/productos.page').then(m => m.ProductosPage)
   },
+    {  path: 'comments',
+    loadComponent: () =>
+      import('./pages/comment/comment.page').then(m => m.CommentsPage)
+  },
   { path: '**', redirectTo: 'inicio' }
 ];
